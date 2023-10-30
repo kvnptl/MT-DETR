@@ -3,3 +3,4 @@ data/radar_projection
 data/lidar_projection
 data/cam_stereo_left_lut
 *.pth
+*.pyc
