@@ -75,6 +75,34 @@ def train_detector(model,
             seed=cfg.seed) for ds in dataset
     ]
 
+    # #####################################
+    # breakpoint()
+    
+    # Model Summary
+    from torchinfo import summary
+    import inspect
+
+    signature = inspect.signature(model.forward)
+    print(signature)
+
+    sample = next(iter(data_loaders[0]))
+    sample['img_metas'] = sample['img_metas'].data[0]
+    sample['img'] = sample['img'].data[0]
+    sample['gt_bboxes'] = sample['gt_bboxes'].data[0]
+    sample['gt_labels'] = sample['gt_labels'].data[0]
+
+    print('Generating model summary...')
+    summary(model=model,
+            input_data=sample,
+            col_names=["input_size", "output_size", "num_params", "trainable"],
+            col_width=20,
+            row_settings=["var_names"])
+
+    import sys
+    sys.exit(0)
+
+    # #####################################
+
     # build optimizer
     optimizer = build_optimizer(model, cfg.optimizer)
 
@@ -87,19 +115,19 @@ def train_detector(model,
                 if hasattr(m, "fp16_enabled"):
                     m.fp16_enabled = True
 
-    # put model on gpus
-    if distributed:
-        find_unused_parameters = cfg.get('find_unused_parameters', False)
-        # Sets the `find_unused_parameters` parameter in
-        # torch.nn.parallel.DistributedDataParallel
-        model = MMDistributedDataParallel(
-            model.cuda(),
-            device_ids=[torch.cuda.current_device()],
-            broadcast_buffers=False,
-            find_unused_parameters=find_unused_parameters)
-    else:
-        model = MMDataParallel(
-            model.cuda(cfg.gpu_ids[0]), device_ids=cfg.gpu_ids)
+    # # put model on gpus
+    # if distributed:
+    #     find_unused_parameters = cfg.get('find_unused_parameters', False)
+    #     # Sets the `find_unused_parameters` parameter in
+    #     # torch.nn.parallel.DistributedDataParallel
+    #     model = MMDistributedDataParallel(
+    #         model.cuda(),
+    #         device_ids=[torch.cuda.current_device()],
+    #         broadcast_buffers=False,
+    #         find_unused_parameters=find_unused_parameters)
+    # else:
+    #     model = MMDataParallel(
+    #         model.cuda(cfg.gpu_ids[0]), device_ids=cfg.gpu_ids)
 
     if 'runner' not in cfg:
         cfg.runner = {

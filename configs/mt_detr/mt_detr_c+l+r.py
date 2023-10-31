@@ -20,7 +20,7 @@ model = dict(
             drop_path_rate=0.7,
             layer_scale_init_value=1.0,
             out_indices=(1, 2, 3),
-            pretrained='checkpoint/convnext_base_22k_1k_384.pth',
+            pretrained='/home/kpatel2s/kpatel2s/sensor_fusion_rnd/KevinPatelRnD/mt_detr/checkpoint/convnext_base_22k_1k_384.pth',
             ),
         args2=dict(
             in_chans=3,
@@ -29,7 +29,7 @@ model = dict(
             drop_path_rate=0.7,
             layer_scale_init_value=1.0,
             out_indices=(1, 2, 3),
-            pretrained='checkpoint/convnext_base_22k_1k_384.pth',
+            pretrained='/home/kpatel2s/kpatel2s/sensor_fusion_rnd/KevinPatelRnD/mt_detr/checkpoint/convnext_base_22k_1k_384.pth',
             ),
         args3=dict(
             in_chans=3,
@@ -38,7 +38,7 @@ model = dict(
             drop_path_rate=0.7,
             layer_scale_init_value=1.0,
             out_indices=(1, 2, 3),
-            pretrained='checkpoint/convnext_base_22k_1k_384.pth',
+            pretrained='/home/kpatel2s/kpatel2s/sensor_fusion_rnd/KevinPatelRnD/mt_detr/checkpoint/convnext_base_22k_1k_384.pth',
             ),
         args4=dict(
             dims=[128, 256, 512, 1024],
@@ -77,9 +77,9 @@ model = dict(
         
     )
 
-prefix_list=["data/cam_stereo_left_lut/",
-            "data/lidar_projection",
-            "data/radar_projection"]
+prefix_list=["/home/kpatel2s/kpatel2s/sensor_fusion_rnd/KevinPatelRnD/mt_detr/data/cam_stereo_left_lut/",
+            "/home/kpatel2s/kpatel2s/sensor_fusion_rnd/KevinPatelRnD/mt_detr/data/lidar_projection",
+            "/home/kpatel2s/kpatel2s/sensor_fusion_rnd/KevinPatelRnD/mt_detr/data/radar_projection"]
 
 
 img_norm_cfg = dict(
@@ -159,19 +159,19 @@ data = dict(
     train=dict(
         img_prefix=prefix_list,
         classes=classes,
-        ann_file="data/coco_annotation/train_clear_simple.json",
+        ann_file="/home/kpatel2s/kpatel2s/sensor_fusion_rnd/KevinPatelRnD/mt_detr/data/coco_annotation/train_clear_simple.json",
         pipeline=train_pipeline,
         ),
     val=dict(
         img_prefix=prefix_list,
         classes=classes,
-        ann_file="data/coco_annotation/val_clear_simple.json",
+        ann_file="/home/kpatel2s/kpatel2s/sensor_fusion_rnd/KevinPatelRnD/mt_detr/data/coco_annotation/val_clear_simple.json",
         pipeline=test_pipeline,
         ),
     test=dict(
         img_prefix=prefix_list,
         classes=classes,
-        ann_file="data/coco_annotation/test_clear_simple.json",
+        ann_file="/home/kpatel2s/kpatel2s/sensor_fusion_rnd/KevinPatelRnD/mt_detr/data/coco_annotation/test_clear_simple.json",
         pipeline=test_pipeline,
         ),
     )
