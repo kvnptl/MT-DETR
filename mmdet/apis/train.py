@@ -94,8 +94,9 @@ def train_detector(model,
     print('Generating model summary...')
     summary(model=model,
             input_data=sample,
-            col_names=["input_size", "output_size", "num_params", "trainable"],
+            col_names=["input_size", "output_size", "num_params", "params_percent", "trainable"],
             col_width=20,
+            depth=30,
             row_settings=["var_names"])
 
     import sys
