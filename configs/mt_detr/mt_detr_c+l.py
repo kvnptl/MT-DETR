@@ -158,7 +158,7 @@ data = dict(
 
 
 # We can use the RCNN model to obtain higher performance
-load_from = '/home/yun/CBNetV2/checkpoint/deformable_detr_twostage_refine_r50_16x2_50e_coco.pth'
+# load_from = '/home/yun/CBNetV2/checkpoint/deformable_detr_twostage_refine_r50_16x2_50e_coco.pth'
 
 optimizer = dict(constructor='LearningRateDecayOptimizerConstructor', _delete_=True, type='AdamW', 
                  lr=0.0001, betas=(0.9, 0.999), weight_decay=0.05,
