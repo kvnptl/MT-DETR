@@ -159,19 +159,19 @@ data = dict(
     train=dict(
         img_prefix=prefix_list,
         classes=classes,
-        ann_file="data/coco_annotation/train_clear_simple.json",
+        ann_file="data/coco_annotation/new_additional_10_perc_split/train_all_simple_10_perc.json",
         pipeline=train_pipeline,
         ),
     val=dict(
         img_prefix=prefix_list,
         classes=classes,
-        ann_file="data/coco_annotation/val_clear_simple.json",
+        ann_file="data/coco_annotation/new_additional_10_perc_split/val_all_simple_10_perc.json",
         pipeline=test_pipeline,
         ),
     test=dict(
         img_prefix=prefix_list,
         classes=classes,
-        ann_file="data/coco_annotation/test_clear_simple.json",
+        ann_file="data/coco_annotation/new_split_10_perc_train_raw/test_clear_simple.json",
         pipeline=test_pipeline,
         ),
     )

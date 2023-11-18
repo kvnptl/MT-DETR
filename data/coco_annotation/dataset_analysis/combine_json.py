@@ -1,4 +1,6 @@
 import json
+import os
+from tqdm import tqdm
 
 def reassign_ids(images, annotations):
     # Global counters for unique IDs
@@ -67,55 +69,77 @@ def count_images_in_json(file_path):
         print(f"Error reading file {file_path}: {e}")
         return 0
 
+def check_dir_exists_and_create(dir_path):
+    if not os.path.exists(dir_path):
+        os.makedirs(dir_path)
+
 # ======================================================================
 # Example usage
 
-set_names = ['train', 'val']
+def combine_raw_json_files():
+    set_names = ['train', 'val']
 
-for set_name in set_names:
+    for set_name in set_names:
 
-    input_json_files = [
-        f'/home/kpatel2s/kpatel2s/sensor_fusion_rnd/KevinPatelRnD/mt_detr_cuda11p1/data/coco_annotation/{set_name}_clear_simple.json', \
-        f'/home/kpatel2s/kpatel2s/sensor_fusion_rnd/KevinPatelRnD/mt_detr_cuda11p1/data/coco_annotation/new_split_10_perc_train_raw/new_set/{set_name}_set_weather.json'] # Add your file paths here
+        input_json_files = [
+            f'/home/kpatel2s/kpatel2s/sensor_fusion_rnd/KevinPatelRnD/mt_detr_cuda11p1/data/coco_annotation/{set_name}_clear_simple.json', \
+            f'/home/kpatel2s/kpatel2s/sensor_fusion_rnd/KevinPatelRnD/mt_detr_cuda11p1/data/coco_annotation/new_split_50_perc_train_raw/new_set/{set_name}_set_weather.json'] # Add your file paths here
 
-    output_json_file = f'/home/kpatel2s/kpatel2s/sensor_fusion_rnd/KevinPatelRnD/mt_detr_cuda11p1/data/coco_annotation/new_additional_10_perc_split/{set_name}_all_simple_10_perc.json'
+        dest_dir = f'/home/kpatel2s/kpatel2s/sensor_fusion_rnd/KevinPatelRnD/mt_detr_cuda11p1/data/coco_annotation/new_additional_50_perc_split'
+        output_json_file = f'{dest_dir}/{set_name}_all_simple_50_perc.json'
 
-    # Count images in each JSON file
-    for file in input_json_files:
-        count_images_in_json(file)
+        check_dir_exists_and_create(dest_dir)
 
-    combine_and_sort_json_files_with_unique_ids(input_json_files, output_json_file)
+        # Count images in each JSON file
+        for file in input_json_files:
+            count_images_in_json(file)
+
+        combine_and_sort_json_files_with_unique_ids(input_json_files, output_json_file)
 
 # ======================================================================
-# combine_and_sort_json_files(input_json_files, output_json_file)
-# parent_dir = '/home/kpatel2s/kpatel2s/sensor_fusion_rnd/KevinPatelRnD/mt_detr_cuda11p1/data/coco_annotation/new_split_10_perc_train_raw'
 
-# destination_dir = '/home/kpatel2s/kpatel2s/sensor_fusion_rnd/KevinPatelRnD/mt_detr_cuda11p1/data/coco_annotation/new_split_10_perc_train_raw/new_set'
+def combine_datasets():
+    # combine_and_sort_json_files(input_json_files, output_json_file)
+    parent_dir = '/home/kpatel2s/kpatel2s/sensor_fusion_rnd/KevinPatelRnD/mt_detr_cuda11p1/data/coco_annotation/new_split_50_perc_train_raw'
 
-# # Loop through all JSON files and count images
-# import os
-# from tqdm import tqdm
+    destination_dir = '/home/kpatel2s/kpatel2s/sensor_fusion_rnd/KevinPatelRnD/mt_detr_cuda11p1/data/coco_annotation/new_split_50_perc_train_raw/new_set'
 
-# # List all json files in the parent directory
-# json_files = [file for file in os.listdir(parent_dir) if file.endswith(".json")]
+    check_dir_exists_and_create(parent_dir)
+    check_dir_exists_and_create(destination_dir)
 
-# train_set = []
-# val_set = []
-# test_set = []
-# # Loop through each json file
-# for json_file in tqdm(json_files):
-#     if "test" in json_file.split("/")[-1].split(".")[0]:
-#         test_set.append(f'{parent_dir}/{json_file}')
-#     elif "val" in json_file.split("/")[-1].split(".")[0]:
-#         val_set.append(f'{parent_dir}/{json_file}')
-#     elif "train" in json_file.split("/")[-1].split(".")[0]:
-#         train_set.append(f'{parent_dir}/{json_file}')
-#     else:
-#         print(f"Skipping file {json_file}")
-    
-# # Combine all train sets, all val sets, and all test sets
+    # Loop through all JSON files and count images
 
-# combine_and_sort_json_files_with_unique_ids(train_set, f'{destination_dir}/train_set_weather.json')
-# combine_and_sort_json_files_with_unique_ids(val_set, f'{destination_dir}/val_set_weather.json')
-# combine_and_sort_json_files_with_unique_ids(test_set, f'{destination_dir}/test_set_weather.json')
+    # List all json files in the parent directory
+    json_files = [file for file in os.listdir(parent_dir) if file.endswith(".json")]
+
+    train_set = []
+    val_set = []
+    test_set = []
+    # Loop through each json file
+    for json_file in tqdm(json_files):
+        if "test" in json_file.split("/")[-1].split(".")[0]:
+            test_set.append(f'{parent_dir}/{json_file}')
+        elif "val" in json_file.split("/")[-1].split(".")[0]:
+            val_set.append(f'{parent_dir}/{json_file}')
+        elif "train" in json_file.split("/")[-1].split(".")[0]:
+            train_set.append(f'{parent_dir}/{json_file}')
+        else:
+            print(f"Skipping file {json_file}")
+        
+    # Combine all train sets, all val sets, and all test sets
+
+    combine_and_sort_json_files_with_unique_ids(train_set, f'{destination_dir}/train_set_weather.json')
+    combine_and_sort_json_files_with_unique_ids(val_set, f'{destination_dir}/val_set_weather.json')
+    combine_and_sort_json_files_with_unique_ids(test_set, f'{destination_dir}/test_set_weather.json')
 # ======================================================================
+
+def main():
+    combine_raw_files = True
+
+    if combine_raw_files:
+        combine_raw_json_files()
+    else:
+        combine_datasets()
+
+if __name__ == '__main__':
+    main()

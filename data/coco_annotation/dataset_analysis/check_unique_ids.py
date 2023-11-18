@@ -20,5 +20,5 @@ def verify_unique_ids(json_file):
     return True
 
 # Example usage
-json_file = '/home/kpatel2s/kpatel2s/sensor_fusion_rnd/KevinPatelRnD/mt_detr_cuda11p1/data/coco_annotation/new_split_10_perc_train_raw/new_set/train_set_weather.json'  # Replace with your file path
+json_file = '/home/kpatel2s/kpatel2s/sensor_fusion_rnd/KevinPatelRnD/mt_detr_cuda11p1/data/coco_annotation/new_additional_50_perc_split/train_all_simple_50_perc.json'  # Replace with your file path
 verify_unique_ids(json_file)

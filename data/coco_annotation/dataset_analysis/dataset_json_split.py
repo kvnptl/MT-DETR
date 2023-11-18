@@ -1,5 +1,6 @@
 import json
 import random
+import os
 
 def split_and_sort_json_data(input_file, train_file, val_file, test_file, val_percent=0.05, train_percent=0.1, seed=42):
     # Set seed for reproducibility
@@ -43,6 +44,10 @@ def split_and_sort_json_data(input_file, train_file, val_file, test_file, val_pe
         with open(filename, 'w') as file:
             json.dump(new_data, file, indent=4)
 
+def check_dir_exists_and_create(dir_path):
+    if not os.path.exists(dir_path):
+        os.makedirs(dir_path)
+
 # Example usage
 # input_json_file = f'/home/kpatel2s/kpatel2s/sensor_fusion_rnd/KevinPatelRnD/mt_detr_cuda11p1/data/coco_annotation/dense_fog_night.json'
 # train_json_file = f'/home/kpatel2s/kpatel2s/sensor_fusion_rnd/KevinPatelRnD/mt_detr_cuda11p1/data/coco_annotation/dataset_analysis/{input_json_file.split("/")[-1].split(".")[0]}_train_set.json'
@@ -55,7 +60,10 @@ def split_and_sort_json_data(input_file, train_file, val_file, test_file, val_pe
 # Loop over all json files and split them
 parent_dir = "/home/kpatel2s/kpatel2s/sensor_fusion_rnd/KevinPatelRnD/mt_detr_cuda11p1/data/coco_annotation"
 
-dest_dir = "/home/kpatel2s/kpatel2s/sensor_fusion_rnd/KevinPatelRnD/mt_detr_cuda11p1/data/coco_annotation/new_split_10_perc_train"
+dest_dir = "/home/kpatel2s/kpatel2s/sensor_fusion_rnd/KevinPatelRnD/mt_detr_cuda11p1/data/coco_annotation/new_split_50_perc_train_raw"
+
+check_dir_exists_and_create(parent_dir)
+check_dir_exists_and_create(dest_dir)
 
 # list all json files in the parent directory
 import os
@@ -75,7 +83,7 @@ for json_file in tqdm(json_files):
     val_json_file = f'{dest_dir}/{json_file.split("/")[-1].split(".")[0]}_val_set.json'
     test_json_file = f'{dest_dir}/{json_file.split("/")[-1].split(".")[0]}_test_set.json'
     
-    train_percentage = 0.1
+    train_percentage = 0.5
     val_percentage = 0.05
     
     split_and_sort_json_data(input_json_file, train_json_file, val_json_file, test_json_file, val_percent=val_percentage, train_percent=train_percentage)
