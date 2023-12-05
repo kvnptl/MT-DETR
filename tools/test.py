@@ -222,6 +222,16 @@ def main():
             broadcast_buffers=False)
         outputs = multi_gpu_test(model, data_loader, args.tmpdir,
                                  args.gpu_collect)
+    
+    # filtered_outputs = []
+    # for output in outputs:
+    #     new_output = []
+    #     for out in output:
+    #         # Filter out bounding boxes with confidence less than 0.3
+    #         filtered_bboxes = out[out[:, 4] >= 0.3] if out.size else out
+    #         new_output.append(filtered_bboxes)
+    #     filtered_outputs.append(new_output)
+
 
     rank, _ = get_dist_info()
     if rank == 0:
@@ -240,7 +250,7 @@ def main():
             ]:
                 eval_kwargs.pop(key, None)
             eval_kwargs.update(dict(metric=args.eval, **kwargs))
-            metric = dataset.evaluate(outputs, **eval_kwargs)
+            metric = dataset.evaluate(outputs, classwise=True, **eval_kwargs)
             print(metric)
             metric_dict = dict(config=args.config, metric=metric)
             if args.work_dir is not None and rank == 0:
